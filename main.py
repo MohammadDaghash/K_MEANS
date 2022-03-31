@@ -33,32 +33,41 @@ class KMeans:
         for centroid in self.centroids:
             self.clusters[centroid] = set()
 
-    def assign_to_clusters(self):
-        argmin = 9223372036854775807
-        argmin_i = 0
-        for i in range(1, self.N + 1):
-            for j in range(1, self.K + 1):
-                curr_closest = (self.data_points[i] - self.centroids[j]) ** 2  # need t
-                if curr_closest < argmin:
-                    argmin = curr_closest
-                    argmin_i = self.centroids[j]
-            argmin = 9223372036854775807
-            self.clusters[argmin_i].add(self.data_points[i])
+        def assign_to_clusters(self):
+        min = 0
+        index = 0
+        for x in data_points:
+           for i in range(len(x)):
+               min += (pow(x[i] - centroids[0][i], 2))
+           for j in range(k):
+               sum = 0
+               for i in range(len(x)):
+                   sum += (pow(x[i] - centroids[j][i], 2))
+               if sum < min:
+                   min = sum
+                   index = j
+           self.clusters[index].add(self.data_points[i])
+
+
+    def vecnorm(vec, oldvec):
+        norm = 0
+        for i in range(len(vec)):
+            norm += pow(vec[i] - oldvec[i], 2)
+        norm = pow(norm, 0.5)
+        return norm
 
     def update_centroids(self):
-        recently_changed = [0]*self.K
-        for i in range(1, self.K + 1):
-            length = 0
-            for xl in self.clusters[i]:
-                sum += xl
-                length += 1
-            sum = 0
-            recently_changed[i] = self.centroids[i]
-            self.centroids[i] = sum\length
+        oldcentroids=[[centroids[i][j]for j in range(len(self.d))] for i in range(self.K)]
+        for i in range(len(clusters)): #K
+            for j in range(len(clusters[i][j])): #d
+                for k in range(len(cluster[i])):
+                     sum += clusters[i][k][j]
+                centroids[i][j] = sum/len(clusters[i])
+
 
     def is_converged(self):  # checks the convergence criteria
-        for i in range(1, self.K + 1):
-            if abs(self.centroids[i] - recently_changed[i]) >= 0.001
+        for i in range(len(centroids)):
+            if vecnorm(centroids[i],oldcentroids[i]) >= self.epsilon:
                 return False
         return True
 
